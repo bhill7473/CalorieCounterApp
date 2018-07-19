@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +7,16 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <link rel="stylesheet" href="assets/cs/style.css">
+<!--<link rel="stylesheet" href="/assets/cs/style.css">-->
+<style>#footer {
+  margin-top:10px;position:fixed;bottom:0;width:100%;height:60px;   /* Height of the footer */background:#6cf;}
+.tbtn{float:right;}#calCount{float:right;}#clrbtn{margin-bottom: 10px;float:right}.postDiv{ background-color:white;color:black;text-align:center;
+}</style>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="assets/js/search.js"></script>
+
 
 </head>
 
@@ -29,10 +31,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                      <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="chat.html">Health Chat</a>
+                      <a class="nav-link" href="/chat">Health Chat</a>
                     </li>
                     
 
@@ -74,7 +76,57 @@
               </div>
          <footer class="bg-dark"  id="footer" ></footer>
          
-
+         <script>var totalCalorieCount = 0;
+          var cal = 0;
+          
+              $("#sbmt").on("click", function(event){
+                event.preventDefault();
+                if($("#name").val()===""){
+                    alert("Search input cannot be empty");
+                    return;
+                }
+                $("#main-table > tbody").empty();
+                $("#results").empty();
+                  var rstrnt = $("#name").val().trim();
+                  var queryURL = "https://api.nutritionix.com/v1_1/search/"+ rstrnt + "?results=0:20&fields=item_name,brand_name,item_id,nf_calories&appId=9eacd9de&appKey=cabf4ade817ceab05e66dc17ecb50cd6";
+                  $.ajax({
+                url: queryURL,
+                method: "GET"
+              }).then(function(response) {
+                  for(var i=0;i<response.hits.length;i++){
+                      var name = response.hits[i].fields.brand_name;
+                      var item = response.hits[i].fields.item_name;
+                      var calories = response.hits[i].fields.nf_calories;
+               // $("#results").append("<b>Location: </b>" + name + ", "+ "<b>Name of item: </b>" + item + ", " + "<b>Calories: </b>" + calories + "<br>");
+                $("#main-table > tbody").append("<tr id=row" + [i] + "><td>" + name + "</td><td>" + item + "</td><td>" +
+                    calories + "<button class= tbtn id=item" + [i] + " value=" + calories + ">Add to total</button></td></tr>");
+                    $("#name").val("");
+                  }
+               
+              });
+              
+          
+          });
+          
+          $(document).on("click", ".tbtn", function(event){
+              event.preventDefault();
+              
+             cal = parseFloat($(this).val());
+             totalCalorieCount += cal;
+          
+             $("#calNum").html(totalCalorieCount);
+              
+           
+          
+            });
+          
+          $("#clrbtn").on("click", function(){
+            $("#calNum").html(0);
+            totalCalorieCount = 0;
+          
+          })
+          
+          </script>
 </body>
 
 </html>
