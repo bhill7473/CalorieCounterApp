@@ -24,3 +24,11 @@
      color:black;
      text-align:center;
  }
+ .floatl{
+     float:left;
+ }
+ .ml{margin-left:20px !important;}
+ .mt{
+    margin-top:20px !important;
+
+}

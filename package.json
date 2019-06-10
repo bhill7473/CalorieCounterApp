@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/bhill7473/CalorieCounterApp/issues"
   },
-  "homepage": "https://github.com/bhill7473/CalorieCounterApp#readme"
+  "homepage": "https://github.com/bhill7473/CalorieCounterApp#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0"
+  }
 }

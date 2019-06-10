@@ -114,7 +114,7 @@
              cal = parseFloat($(this).val());
              totalCalorieCount += cal;
           
-             $("#calNum").html(totalCalorieCount);
+             $("#calNum").html(Math.round(totalCalorieCount * 100) / 100);
               
            
           
